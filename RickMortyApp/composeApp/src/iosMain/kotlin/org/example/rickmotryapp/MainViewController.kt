@@ -1,5 +1,8 @@
 package org.example.rickmotryapp
 
 import androidx.compose.ui.window.ComposeUIViewController
+import org.example.rickmotryapp.di.initKoin
 
-fun MainViewController() = ComposeUIViewController { App() }
+//afegim  al ComposeUIViewController el initKoin, posem  (configure = { initKoin()} ) per a que s'inicialitzi el Koin
+
+fun MainViewController() = ComposeUIViewController(configure = { initKoin()} ) { App() }
