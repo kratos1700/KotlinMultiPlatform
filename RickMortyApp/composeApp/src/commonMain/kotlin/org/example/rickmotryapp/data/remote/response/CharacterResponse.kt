@@ -7,7 +7,7 @@ import org.example.rickmotryapp.domain.model.CharacterModel
 
 @Serializable // sirve para que se pueda serializar y deserializar el objeto de la petición
 data class CharacterResponse(
-   @SerialName("id") val id: String,  // SerialName es para que coincida con el nombre de la propiedad en la respuesta de la API
+   @SerialName("id") val id: Int,  // SerialName es para que coincida con el nombre de la propiedad en la respuesta de la API
     val status: String,
     val image: String
 ) {
