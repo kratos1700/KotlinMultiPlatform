@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import org.example.rickmotryapp.domain.core.Repository
 
 
-
-class CharactersViewModel(val getRandomCharacter: GetRandomCharacter) : ViewModel() {
+class CharactersViewModel(val getRandomCharacter: GetRandomCharacter, private val repository: Repository) : ViewModel() {
 
     // para manejar el estado de la pantalla
     private val _state = MutableStateFlow<CharactersState>(CharactersState())
@@ -30,6 +30,12 @@ class CharactersViewModel(val getRandomCharacter: GetRandomCharacter) : ViewMode
             }
             _state.update { it.copy(characterOfTheDay = result) }  //actualizamos el estado de la pantalla con el personaje obtenido
         }
+        getAllChacarters()
+    }
+
+    // funcion para obtener todos los personajes
+    private fun getAllChacarters() {
+        _state.update { it.copy(characters = repository.getAllCharacters()) } //actualizamos el estado de la pantalla con todos los personajes obtenidos
     }
 }
 

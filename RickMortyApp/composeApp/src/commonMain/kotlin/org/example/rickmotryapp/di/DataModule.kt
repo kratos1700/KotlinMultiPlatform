@@ -9,6 +9,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.example.rickmotryapp.data.RepositoryImpl
 import org.example.rickmotryapp.data.remote.ApiService
+import org.example.rickmotryapp.data.remote.pagin.CharactersPagingSource
 import org.example.rickmotryapp.domain.core.Repository
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -35,4 +36,5 @@ val dataModule = module {
 
     factoryOf(::ApiService) // factoryOf es para que se cree una nueva instancia cada vez que se solicite
     factory <Repository> { RepositoryImpl(get()) }  // factory es para que se cree una nueva instancia cada vez que se solicite, forma antigua
+    factoryOf(::CharactersPagingSource) // factoryOf es para que se cree una nueva instancia cada vez que se solicite
 }

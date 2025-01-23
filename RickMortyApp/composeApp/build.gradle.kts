@@ -62,6 +62,9 @@ kotlin {
             //coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+            //paging3
+            implementation(libs.paging.compose.common)
+            implementation(libs.paging.common)
 
         }
         iosMain.dependencies {
