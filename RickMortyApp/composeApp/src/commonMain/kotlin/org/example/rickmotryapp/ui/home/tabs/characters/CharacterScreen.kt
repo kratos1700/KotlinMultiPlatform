@@ -98,19 +98,18 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
 
             else -> {
                 //recorremos la lista de personajes
-
                 items(characters.itemCount) { index ->
                     characters[index]?.let { character ->
                         CharacterItemList(character) //mostramos el item del personaje
                     }
                 }
-                if (characters.loadState.append is LoadState.Loading) {
+                if (characters.loadState.append is LoadState.Loading) { // cuando se esta cargando mas elementos
                     item(span = { GridItemSpan(2) }) { //mostramos un item que ocupe las dos columnas
                         Box(
                             modifier = Modifier.fillMaxHeight().height(100.dp),
                             contentAlignment = Alignment.Center
                         ) { //centramos el contenido
-                            CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black) //
+                            CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black)
                         }
                     }
 
