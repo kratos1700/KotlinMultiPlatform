@@ -1,6 +1,9 @@
 package org.example.rickmotryapp.ui.home.tabs.characters
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -8,6 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -25,23 +33,133 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import app.cash.paging.compose.LazyPagingItems
+import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import org.example.rickmotryapp.domain.model.CharacterModel
 import org.example.rickmotryapp.ui.core.ex.vertical
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import rickmortyapp.composeapp.generated.resources.Res
+import rickmortyapp.composeapp.generated.resources.rickface
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun CharacterScreen(
-
-) {
+fun CharacterScreen() {
     val charactersViewModel = koinViewModel<CharactersViewModel>()
     val state by charactersViewModel.state.collectAsState() //obtenemos el estado del viewmodel como un State
+    val characters =
+        state.characters.collectAsLazyPagingItems() //obtenemos los personajes como LazyPagingItems para poder paginar la lista
 
     Column(Modifier.fillMaxSize()) {
 
-        CharacterOfTheDay(state.characterOfTheDay) //mostramos el personaje del dia en la pantalla
+
+
+        CharactersGridList(characters, state) //mostramos la lista de personajes en la pantalla
+    }
+
+}
+
+@Composable
+fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState, ) {
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        columns = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+
+        item ( span = { GridItemSpan(2) }) {
+            CharacterOfTheDay(state.characterOfTheDay) //mostramos el personaje del dia en la pantalla
+
+        }
+
+
+        when { //manejamos los estados de carga de la lista de personajes
+            characters.loadState.refresh is LoadState.Loading && characters.itemCount == 0 -> { // carga inicial y no hay elementos
+                // carga inicial
+                item(span = { GridItemSpan(2) }) { //mostramos un item que ocupe las dos columnas
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) { //centramos el contenido
+                        CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black) //
+                    }
+                }
+            }
+            // cuando se esta cargando  y no hay elementos en la lista
+            characters.loadState.refresh is LoadState.NotLoading && characters.itemCount == 0 -> { //no hay elementos
+                item(span = { GridItemSpan(2) }) { //mostramos un item que ocupe las dos columnas
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) { //centramos el contenido
+                        Text("No characters found") //mostramos un mensaje
+                    }
+                }
+            }
+
+            else -> {
+                //recorremos la lista de personajes
+
+                items(characters.itemCount) { index ->
+                    characters[index]?.let { character ->
+                        CharacterItemList(character) //mostramos el item del personaje
+                    }
+                }
+                if (characters.loadState.refresh is LoadState.Loading) {
+                    item(span = { GridItemSpan(2) }) { //mostramos un item que ocupe las dos columnas
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) { //centramos el contenido
+                            CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black) //
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun CharacterItemList(character: CharacterModel) {
+    Box(
+        modifier = Modifier.clip(RoundedCornerShape(24))
+            .border(2.dp, Color.Green,
+                shape = RoundedCornerShape(0, 24, 0, 24)) // agregamos un borde al item del personaje con un color verde y una forma redondeada en las esquinas superiores e inferiores
+            .fillMaxWidth().height(150.dp)
+            .clickable { },
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        AsyncImage(
+            model = character.image,
+            contentDescription = character.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+            placeholder = painterResource(Res.drawable.rickface)
+        )
+        Box(
+            modifier = Modifier.fillMaxWidth().height(60.dp).background(
+                brush = Brush.verticalGradient(
+                    listOf(
+                        Color.Black.copy(alpha = 0f),
+                        Color.Black.copy(alpha = 0.6f),
+                        Color.Black.copy(alpha = 1f)
+                    )
+                )
+            ), contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = character.name,
+                color = Color.White,
+                fontSize = 18.sp,
+            )
+        }
     }
 
 }
@@ -62,12 +180,13 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
         } else {
             Box(contentAlignment = Alignment.BottomStart) {
 
-            AsyncImage(
-                model = characterModel.image,
-                contentDescription = "Character Of the day",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+                AsyncImage(
+                    model = characterModel.image,
+                    contentDescription = "Character Of the day",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+
+                )
 
                 Box(
                     Modifier.fillMaxSize()
@@ -90,7 +209,7 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
                     overflow = TextOverflow.Ellipsis, //si el texto es muy largo, se corta y se muestra puntos suspensivos
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 16.dp)
-                       .fillMaxHeight()
+                        .fillMaxHeight()
                         .vertical()
                         .rotate(-90f)
                 )
@@ -100,3 +219,4 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
     }
 
 }
+// 19:28

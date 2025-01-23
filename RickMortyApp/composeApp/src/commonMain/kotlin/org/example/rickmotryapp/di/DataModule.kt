@@ -35,6 +35,6 @@ val dataModule = module {
     }
 
     factoryOf(::ApiService) // factoryOf es para que se cree una nueva instancia cada vez que se solicite
-    factory <Repository> { RepositoryImpl(get()) }  // factory es para que se cree una nueva instancia cada vez que se solicite, forma antigua
+    factory <Repository> { RepositoryImpl(get(), get()) }  // factory es para que se cree una nueva instancia cada vez que se solicite, forma antigua
     factoryOf(::CharactersPagingSource) // factoryOf es para que se cree una nueva instancia cada vez que se solicite
 }

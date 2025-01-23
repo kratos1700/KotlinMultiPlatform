@@ -27,7 +27,7 @@ viewmodel = "2.8.2"
 coil = "3.0.0-alpha08"
 #Paging3
 pagingComposeCommon = "3.3.0-alpha02-0.4.0"
-pagingCommonAndroid = "3.3.5"
+
 
 
 [libraries]
