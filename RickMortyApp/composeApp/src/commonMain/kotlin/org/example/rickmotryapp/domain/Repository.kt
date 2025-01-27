@@ -16,4 +16,6 @@ interface Repository {
 
     suspend fun saveCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel)
 
+
+
 }
