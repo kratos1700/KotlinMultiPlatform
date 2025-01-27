@@ -4,14 +4,17 @@ import androidx.paging.PagingConfig
 import app.cash.paging.Pager
 import app.cash.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import org.example.rickmotryapp.data.database.RickMortyDatabase
 import org.example.rickmotryapp.data.remote.ApiService
 import org.example.rickmotryapp.data.remote.pagin.CharactersPagingSource
-import org.example.rickmotryapp.domain.core.Repository
+import org.example.rickmotryapp.domain.Repository
 import org.example.rickmotryapp.domain.model.CharacterModel
+import org.example.rickmotryapp.domain.model.CharacterOfTheDayModel
 
 class RepositoryImpl(
     private val apiService: ApiService,
-    private val charactersPagingSource: CharactersPagingSource
+    private val charactersPagingSource: CharactersPagingSource,
+    private val rickMortyDatabase: RickMortyDatabase
 ) : Repository {
 
     companion object { // para poder acceder a las propiedades de la clase sin necesidad de instanciarla
@@ -31,6 +34,14 @@ class RepositoryImpl(
             pagingSourceFactory = { charactersPagingSource } // se pasa la fuente de datos paginada
         ).flow // se obtiene el flujo de datos paginados
 
+    }
+
+    override suspend fun getCharacterDB(): CharacterOfTheDayModel? {
+      return rickMortyDatabase.getPreferencesDao().getCharacterOfTheDayDB()?.toDomain()
+    }
+
+    override suspend fun saveCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel) {
+        rickMortyDatabase.getPreferencesDao().saveCharacter(characterOfTheDayModel.toEntity())
     }
 
 }

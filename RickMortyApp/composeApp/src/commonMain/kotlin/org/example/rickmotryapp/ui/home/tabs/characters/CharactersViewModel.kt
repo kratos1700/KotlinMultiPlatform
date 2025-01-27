@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.example.rickmotryapp.domain.core.Repository
+import org.example.rickmotryapp.domain.Repository
 
 
 class CharactersViewModel(val getRandomCharacter: GetRandomCharacter, private val repository: Repository) : ViewModel() {

@@ -1,5 +1,7 @@
 package org.example.rickmotryapp.di
 
+import org.example.rickmotryapp.data.database.RickMortyDatabase
+import org.example.rickmotryapp.data.database.getDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -8,6 +10,6 @@ import org.koin.dsl.module
  */
 actual fun platformModule(): Module {
   return  module {
-
+    single<RickMortyDatabase> { getDatabase() }  // Inyecta la base de datos de Room en la parte ios
     }
 }
