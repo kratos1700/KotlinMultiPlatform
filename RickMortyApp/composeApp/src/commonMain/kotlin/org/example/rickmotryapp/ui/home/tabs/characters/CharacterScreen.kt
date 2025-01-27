@@ -50,7 +50,8 @@ import rickmortyapp.composeapp.generated.resources.rickface
 fun CharacterScreen() {
     val charactersViewModel = koinViewModel<CharactersViewModel>()
     val state by charactersViewModel.state.collectAsState() //obtenemos el estado del viewmodel como un State
-    val characters = state.characters.collectAsLazyPagingItems() //obtenemos los personajes como LazyPagingItems para poder paginar la lista
+    val characters =
+        state.characters.collectAsLazyPagingItems() //obtenemos los personajes como LazyPagingItems para poder paginar la lista
 
     CharactersGridList(characters, state) //mostramos la lista de personajes en la pantalla
 
@@ -58,16 +59,20 @@ fun CharacterScreen() {
 }
 
 @Composable
-fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState, ) {
+fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+
     ) {
 
-        item ( span = { GridItemSpan(2) }) {
-            CharacterOfTheDay(state.characterOfTheDay) //mostramos el personaje del dia en la pantalla
+        item(span = { GridItemSpan(2) }) {
+            Column {
+                    Text("Characters", color = Color.Black, fontSize = 24.sp)
+                CharacterOfTheDay(state.characterOfTheDay) //mostramos el personaje del dia en la pantalla
+            }
 
         }
 
@@ -124,8 +129,10 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
 fun CharacterItemList(character: CharacterModel) {
     Box(
         modifier = Modifier.clip(RoundedCornerShape(24))
-            .border(2.dp, Color.Green,
-                shape = RoundedCornerShape(0, 24, 0, 24)) // agregamos un borde al item del personaje con un color verde y una forma redondeada en las esquinas superiores e inferiores
+            .border(
+                2.dp, Color.Green,
+                shape = RoundedCornerShape(0, 24, 0, 24)
+            ) // agregamos un borde al item del personaje con un color verde y una forma redondeada en las esquinas superiores e inferiores
             .fillMaxWidth().height(150.dp)
             .clickable { },
         contentAlignment = Alignment.BottomCenter
@@ -180,7 +187,7 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
 
-                )
+                    )
 
                 Box(
                     Modifier.fillMaxSize()

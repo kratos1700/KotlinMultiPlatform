@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +36,8 @@ class CharactersViewModel(val getRandomCharacter: GetRandomCharacter, private va
 
     // funcion para obtener todos los personajes
     private fun getAllChacarters() {
-        _state.update { it.copy(characters = repository.getAllCharacters()) } //actualizamos el estado de la pantalla con todos los personajes obtenidos
-    }
+        _state.update { it.copy(characters = repository.getAllCharacters().cachedIn(viewModelScope)) } //actualizamos el estado de la pantalla con todos los personajes obtenidos
+    }                                                                      //.cachedIn(viewModelScope) sirve para cachear los datos y no tener que volver a obtenerlos
 }
 
 
