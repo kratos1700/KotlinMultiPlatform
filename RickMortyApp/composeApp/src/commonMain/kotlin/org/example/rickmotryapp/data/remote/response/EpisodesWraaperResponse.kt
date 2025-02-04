@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EpisodesWraaperResponse(
     val info:InfoResponse,
-    val result:List<EpisodeResponse>
+    val results:List<EpisodeResponse>
 )

@@ -42,12 +42,12 @@ data class EpisodeResponse(
     private fun getSeasonFromEpisodeCode(episode: String): SeasonEpisodes {
         return when {
             episode.startsWith("S01") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S02") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S03") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S04") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S05") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S06") -> SeasonEpisodes.SEASON_1
-            episode.startsWith("S07") -> SeasonEpisodes.SEASON_1
+            episode.startsWith("S02") -> SeasonEpisodes.SEASON_2
+            episode.startsWith("S03") -> SeasonEpisodes.SEASON_3
+            episode.startsWith("S04") -> SeasonEpisodes.SEASON_4
+            episode.startsWith("S05") -> SeasonEpisodes.SEASON_5
+            episode.startsWith("S06") -> SeasonEpisodes.SEASON_6
+            episode.startsWith("S07") -> SeasonEpisodes.SEASON_7
             else -> SeasonEpisodes.UNKNOWN
 
         }

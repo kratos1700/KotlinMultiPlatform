@@ -7,13 +7,16 @@ import kotlinx.coroutines.flow.Flow
 import org.example.rickmotryapp.data.database.RickMortyDatabase
 import org.example.rickmotryapp.data.remote.ApiService
 import org.example.rickmotryapp.data.remote.pagin.CharactersPagingSource
+import org.example.rickmotryapp.data.remote.pagin.EpisodesPagingSource
 import org.example.rickmotryapp.domain.Repository
 import org.example.rickmotryapp.domain.model.CharacterModel
 import org.example.rickmotryapp.domain.model.CharacterOfTheDayModel
+import org.example.rickmotryapp.domain.model.EpisodeModel
 
 class RepositoryImpl(
     private val apiService: ApiService,
     private val charactersPagingSource: CharactersPagingSource,
+    private val episodesPagingSource: EpisodesPagingSource,
     private val rickMortyDatabase: RickMortyDatabase
 ) : Repository {
 
@@ -33,6 +36,14 @@ class RepositoryImpl(
             config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = PREFETCH_DISTANCE), // se configura el Pager con el tamaño de la página y la distancia de precarga
             pagingSourceFactory = { charactersPagingSource } // se pasa la fuente de datos paginada
         ).flow // se obtiene el flujo de datos paginados
+
+    }
+
+    override fun getAllEpisodes(): Flow<PagingData<EpisodeModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = PREFETCH_DISTANCE),
+            pagingSourceFactory = { episodesPagingSource }
+        ).flow
 
     }
 
