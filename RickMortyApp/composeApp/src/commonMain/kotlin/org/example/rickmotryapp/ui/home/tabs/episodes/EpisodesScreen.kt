@@ -1,5 +1,6 @@
 package org.example.rickmotryapp.ui.home.tabs.episodes
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
@@ -22,11 +31,13 @@ import org.example.rickmotryapp.domain.model.SeasonEpisodes
 import org.example.rickmotryapp.ui.core.components.PagingLoadingState
 import org.example.rickmotryapp.ui.core.components.PagingType
 import org.example.rickmotryapp.ui.core.components.PagingWrapper
+import org.example.rickmotryapp.ui.core.components.VideoPlayer
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import rickmortyapp.composeapp.generated.resources.Res
+import rickmortyapp.composeapp.generated.resources.portal
 import rickmortyapp.composeapp.generated.resources.season1
 import rickmortyapp.composeapp.generated.resources.season2
 import rickmortyapp.composeapp.generated.resources.season3
@@ -44,7 +55,7 @@ fun EpisodesScreen(modifier: Modifier = Modifier) {
     val state by episodesViewModel.state.collectAsState()
     val episodes = state.characters.collectAsLazyPagingItems()
 
-    Box(Modifier.fillMaxSize()) {
+    Column(Modifier.fillMaxSize()) {
         PagingWrapper(
             pagingType = PagingType.ROW,
             pagingItems = episodes,
@@ -55,17 +66,26 @@ fun EpisodesScreen(modifier: Modifier = Modifier) {
 
             },
             itemView = {
-                EpisodesItemList(it) // it es el episodio gestionado por PagingWrapper generico
+                EpisodesItemList(it) {
+                    episodesViewModel.playVideo(it)
+                } // it es el episodio gestionado por PagingWrapper generico
             }
 
         )
+
+        EpisodePlayer(state.playVideo) {
+            episodesViewModel.closeVideo()
+        }
+
     }
 }
 
 @Composable
-fun EpisodesItemList(episode: EpisodeModel) {
+fun EpisodesItemList(episode: EpisodeModel, onEpisodeSelected: (String) -> Unit = {}) {
 
-    Column(modifier = Modifier.width(120.dp).padding(horizontal = 8.dp).clickable { }) {
+    Column(
+        modifier = Modifier.width(120.dp).padding(horizontal = 8.dp)
+            .clickable { onEpisodeSelected(episode.videoUrl) }) {
         Image(
             modifier = Modifier.height(200.dp).fillMaxWidth(),
             contentDescription = null,
@@ -86,4 +106,33 @@ fun getSeasonImage(seasonEpisode: SeasonEpisodes): DrawableResource {
         SeasonEpisodes.SEASON_7 -> Res.drawable.season7
         SeasonEpisodes.UNKNOWN -> Res.drawable.season1
     }
+}
+
+
+@Composable
+fun EpisodePlayer(playVideo:String, onCloseVideo: () -> Unit) {
+    AnimatedVisibility (playVideo.isNotBlank()) {
+
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth().height(250.dp).padding(16.dp)
+                .border(3.dp, Color.Green, CardDefaults.elevatedShape)
+        ) {
+            Box(modifier = Modifier.background(color = Color.Black)) {
+                Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+
+                    VideoPlayer(Modifier.fillMaxWidth().height(200.dp), playVideo)
+                }
+                Row {
+                    Spacer(Modifier.weight(1f))
+                    Image(
+                        painter = painterResource(Res.drawable.portal),
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp).size(40.dp).clickable { onCloseVideo() }
+                    )
+                }
+            }
+        }
+
+    }
+
 }
