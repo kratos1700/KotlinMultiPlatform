@@ -1,5 +1,7 @@
 package org.example.rickmotryapp.domain.model
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.example.rickmotryapp.data.database.entity.CharacterOfTheDayEntity
 
 data class CharacterOfTheDayModel(
@@ -12,7 +14,11 @@ data class CharacterOfTheDayModel(
             isAlive = characterModel.isAlive,
             image = characterModel.image,
             name = characterModel.name,
-            selectedDate = selectedDate
+            selectedDate = selectedDate,
+            species = characterModel.species,
+            gender = characterModel.gender,
+            origin = characterModel.origin,
+            episodes =  Json.encodeToString(characterModel.episodes)
         )
 
     }

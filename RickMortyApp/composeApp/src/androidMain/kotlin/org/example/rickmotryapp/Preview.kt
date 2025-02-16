@@ -17,6 +17,10 @@ fun Preview(modifier: Modifier = Modifier) {
             id = 1,
             isAlive = true,
             name = "Rick Sanchez",
-            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            species = "Human",
+            gender = "",
+            origin = "Earth (C-137)",
+            episodes = emptyList()
         ))
 }

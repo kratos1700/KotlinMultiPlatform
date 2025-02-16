@@ -17,14 +17,14 @@ import org.example.rickmotryapp.ui.core.navigation.bottomnavigation.BottomBarIte
 import org.example.rickmotryapp.ui.core.navigation.bottomnavigation.NavigationBottomWrapper
 
 @Composable
-fun HomeScreen () {
+fun HomeScreen(mainNavController: NavHostController) {
     val items = listOf(BottomBarItem.Episodes(), BottomBarItem.Characters())
     val navController = rememberNavController()
 
    Scaffold(bottomBar = { BottomNavigation(items = items, navController) }){ paddingValues ->
 
        Box(modifier = Modifier.padding(paddingValues)) {
-           NavigationBottomWrapper(navController = navController)
+           NavigationBottomWrapper(navController = navController, mainNavController = mainNavController)
        }
 
    }

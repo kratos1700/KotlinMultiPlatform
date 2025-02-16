@@ -19,6 +19,7 @@ interface Repository {
 
     suspend fun saveCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel)
 
+    suspend fun getEpisodesForCharacter(episodes: List<String>): List<EpisodeModel>
 
 
 }

@@ -1,7 +1,11 @@
 package org.example.rickmotryapp.ui.core.ex
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.dp
 
 // esta extension nos permite centrar un elemento verticalmente en un contenedor padre
 fun Modifier.vertical() = layout { measurable, constraints ->
@@ -13,4 +17,12 @@ fun Modifier.vertical() = layout { measurable, constraints ->
 
         )
     }
+}
+
+// esta extension nos permite agregar un borde a un elemento, el color del borde depende de si el elemento esta vivo o no
+fun Modifier.aliveBorder(isAlive: Boolean): Modifier {
+
+    val color = if (isAlive) Color.Green else Color.Red
+    return border(4.dp, color, CircleShape)  //agregamos un borde al elemento
+
 }

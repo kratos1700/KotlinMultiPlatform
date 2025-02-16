@@ -47,19 +47,23 @@ import rickmortyapp.composeapp.generated.resources.rickface
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun CharacterScreen() {
+fun CharacterScreen(navigateToDetail :(CharacterModel) -> Unit) {
     val charactersViewModel = koinViewModel<CharactersViewModel>()
     val state by charactersViewModel.state.collectAsState() //obtenemos el estado del viewmodel como un State
     val characters =
         state.characters.collectAsLazyPagingItems() //obtenemos los personajes como LazyPagingItems para poder paginar la lista
 
-    CharactersGridList(characters, state) //mostramos la lista de personajes en la pantalla
+    CharactersGridList(characters, state, navigateToDetail) //mostramos la lista de personajes en la pantalla
 
 
 }
 
 @Composable
-fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState) {
+fun CharactersGridList(
+    characters: LazyPagingItems<CharacterModel>,
+    state: CharactersState,
+    navigateToDetail: (CharacterModel) -> Unit
+) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         columns = GridCells.Fixed(2),
@@ -105,7 +109,10 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
                 //recorremos la lista de personajes
                 items(characters.itemCount) { index ->
                     characters[index]?.let { character ->
-                        CharacterItemList(character) //mostramos el item del personaje
+                        CharacterItemList(character) {    //mostramos el item del personaje
+                            //navegamos a la pantalla de detalle del personaje
+                            navigateToDetail(it)
+                        }
                     }
                 }
                 if (characters.loadState.append is LoadState.Loading) { // cuando se esta cargando mas elementos
@@ -126,7 +133,7 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
 }
 
 @Composable
-fun CharacterItemList(character: CharacterModel) {
+fun CharacterItemList(character: CharacterModel, onItemSelected: (CharacterModel) -> Unit = {}) {
     Box(
         modifier = Modifier.clip(RoundedCornerShape(24))
             .border(
@@ -134,7 +141,7 @@ fun CharacterItemList(character: CharacterModel) {
                 shape = RoundedCornerShape(0, 24, 0, 24)
             ) // agregamos un borde al item del personaje con un color verde y una forma redondeada en las esquinas superiores e inferiores
             .fillMaxWidth().height(150.dp)
-            .clickable { },
+            .clickable { onItemSelected(character) },
         contentAlignment = Alignment.BottomCenter
     ) {
         AsyncImage(

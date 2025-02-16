@@ -33,7 +33,10 @@ class RepositoryImpl(
     // Aquí se implementará la lógica para obtener todos los personajes de la API paginados
     override fun getAllCharacters(): Flow<PagingData<CharacterModel>> {
         return Pager( // se crea un Pager para obtener los personajes paginados
-            config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = PREFETCH_DISTANCE), // se configura el Pager con el tamaño de la página y la distancia de precarga
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = PREFETCH_DISTANCE
+            ), // se configura el Pager con el tamaño de la página y la distancia de precarga
             pagingSourceFactory = { charactersPagingSource } // se pasa la fuente de datos paginada
         ).flow // se obtiene el flujo de datos paginados
 
@@ -48,11 +51,24 @@ class RepositoryImpl(
     }
 
     override suspend fun getCharacterDB(): CharacterOfTheDayModel? {
-      return rickMortyDatabase.getPreferencesDao().getCharacterOfTheDayDB()?.toDomain()
+        return rickMortyDatabase.getPreferencesDao().getCharacterOfTheDayDB()?.toDomain()
     }
 
     override suspend fun saveCharacterOfTheDay(characterOfTheDayModel: CharacterOfTheDayModel) {
         rickMortyDatabase.getPreferencesDao().saveCharacter(characterOfTheDayModel.toEntity())
+    }
+
+    override suspend fun getEpisodesForCharacter(episodes: List<String>): List<EpisodeModel> {
+
+        if (episodes.isEmpty()) return emptyList() // si la lista de episodios está vacía, se retorna una lista vacía
+
+
+        return if (episodes.size > 1) { // si la lista de episodios tiene más de un elemento
+            apiService.getEpisodes(episodes.joinToString(",")).map { it.toDomain() } // se obtienen los episodios de la API y se mapean a un objeto de dominio para retornarlos
+
+        } else {
+            listOf(apiService.getSingleEpisode(episodes.first()).toDomain()) // si la lista de episodios tiene un solo elemento, se obtiene el episodio de la API y se mapea a un objeto de dominio para retornarlo
+        }
     }
 
 }
