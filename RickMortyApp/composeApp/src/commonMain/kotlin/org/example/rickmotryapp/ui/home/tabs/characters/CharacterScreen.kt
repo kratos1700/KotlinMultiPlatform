@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,9 @@ import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import org.example.rickmotryapp.domain.model.CharacterModel
+import org.example.rickmotryapp.ui.core.BackgroundPrimaryColor
+import org.example.rickmotryapp.ui.core.DefaultTextColor
+import org.example.rickmotryapp.ui.core.Green
 import org.example.rickmotryapp.ui.core.ex.vertical
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -65,7 +69,7 @@ fun CharactersGridList(
     navigateToDetail: (CharacterModel) -> Unit
 ) {
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize().background(BackgroundPrimaryColor).padding(horizontal = 16.dp),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -74,7 +78,7 @@ fun CharactersGridList(
 
         item(span = { GridItemSpan(2) }) {
             Column {
-                    Text("Characters", color = Color.Black, fontSize = 24.sp)
+                    Text("Characters", color = DefaultTextColor, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
                 CharacterOfTheDay(state.characterOfTheDay) //mostramos el personaje del dia en la pantalla
             }
 
@@ -89,7 +93,7 @@ fun CharactersGridList(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) { //centramos el contenido
-                        CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black) //
+                        CircularProgressIndicator(Modifier.size(64.dp), color = Green) //
                     }
                 }
             }
@@ -121,7 +125,7 @@ fun CharactersGridList(
                             modifier = Modifier.fillMaxHeight().height(100.dp),
                             contentAlignment = Alignment.Center
                         ) { //centramos el contenido
-                            CircularProgressIndicator(Modifier.size(64.dp), color = Color.Black)
+                            CircularProgressIndicator(Modifier.size(64.dp), color = Green)
                         }
                     }
 
@@ -183,7 +187,7 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
         if (characterModel == null) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
 
-                CircularProgressIndicator(color = Color.Green)
+                CircularProgressIndicator(color = Green)
             }
         } else {
             Box(contentAlignment = Alignment.BottomStart) {
@@ -213,7 +217,7 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
                     maxLines = 1,
                     minLines = 1,
                     textAlign = TextAlign.Center,
-                    color = Color.White,
+                    color = DefaultTextColor,
                     overflow = TextOverflow.Ellipsis, //si el texto es muy largo, se corta y se muestra puntos suspensivos
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 16.dp)
@@ -227,4 +231,3 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
     }
 
 }
-// 19:28
