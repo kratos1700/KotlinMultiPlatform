@@ -44,6 +44,8 @@ kotlin {
             implementation(libs.koin.android)
             //ktor
             implementation(libs.ktor.client.okhttp)
+            //splash
+            implementation(libs.core.splashscreen)
 
         }
         commonMain.dependencies {
