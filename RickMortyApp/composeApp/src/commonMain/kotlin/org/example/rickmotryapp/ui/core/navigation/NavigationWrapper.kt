@@ -16,12 +16,18 @@ fun NavigationWrapper() {
 
     NavHost(navController = mainNavController, startDestination = Routes.Home.route) {
         composable(route = Routes.Home.route) {
-           HomeScreen(mainNavController)
+            HomeScreen(mainNavController)
         }
-        composable<CharacterDetail> {
-            val characterDetailEncoding: CharacterDetail = it.toRoute<CharacterDetail>() // Recupera el objeto de la ruta
-            val characterModel = Json.decodeFromString<CharacterModel>(characterDetailEncoding.characterModel ) // Convertimos el string a un objeto
-            CharacterDetailScreen(characterModel)
+
+        composable<CharacterDetail> { navBackStackEntry ->
+            val characterDetailEncoding: CharacterDetail =
+                navBackStackEntry.toRoute<CharacterDetail>()
+            val characterModel: CharacterModel =
+                Json.decodeFromString<CharacterModel>(characterDetailEncoding.characterModel)
+            CharacterDetailScreen(
+                characterModel = characterModel,
+                onBackPress = { mainNavController.navigate(Routes.Home.route) })
         }
     }
+
 }

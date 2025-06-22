@@ -36,6 +36,9 @@ androidx-sqliteBundled = "2.5.0-alpha12"
 ksp = "2.0.20-1.0.24"
 core-splashscreen = "1.0.1"
 
+kotlinx-coroutines = "1.8.1"
+
+composeWebviewMultiplatform = "1.9.20"
 
 
 [libraries]
@@ -67,6 +70,8 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor"}
 kotlin-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
+
+
 #ViewModel
 viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 
@@ -88,8 +93,17 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
 
 #SPLASHSCREEN
-
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
+
+#desktop
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+
+
+#WebView
+compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "composeWebviewMultiplatform" }
+
+
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

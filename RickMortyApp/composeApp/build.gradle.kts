@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias (libs.plugins.kotlinxSerialization)
     alias (libs.plugins.kspCompose)
+
 }
 
 kotlin {
@@ -24,6 +25,10 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
+    //añadimos la dependencia de compose desktop
+    jvm("desktop")
+
     
     listOf(
         iosX64(),
@@ -37,6 +42,8 @@ kotlin {
     }
     
     sourceSets {
+        val desktopMain by getting // para que se pueda acceder a desktopMain
+
         task("testClasses") // per evitar errors de compilar amb el martell
         androidMain.dependencies {
             implementation(compose.preview)
@@ -79,9 +86,17 @@ kotlin {
             //room
             implementation(libs.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            api(libs.compose.webview.multiplatform)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) // ktor
+        }
+
+        //añadimos la dependencia de compose desktop
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.ktor.client.cio)
         }
     }
 }
@@ -125,9 +140,42 @@ ksp{
 dependencies {
     add("kspCommonMainMetadata", libs.room.compiler)
     add("kspAndroid", libs.room.compiler)
+    add ( "kspDesktop", libs.room.compiler)
     add("kspIosX64", libs.room.compiler)
     add("kspIosArm64", libs.room.compiler)
     add("kspIosSimulatorArm64", libs.room.compiler)
 
 }
 
+//configuracion de compose desktop para que se pueda ejecutar en escritorio
+compose.desktop{
+    application{
+        mainClass = "org.example.rickmotryapp.MainKt"// el nombre del archivo main.kt de composeApp/src/desktopMain/kotlin/org/example/rickmotryapp/desktop.kt
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "org.example.rickmotryapp"
+            version = "1.0.0"
+            macOS {
+                iconFile.set(project.file("resources/icon.icns"))
+            }
+        }
+        afterEvaluate { // per a que funciona lo de cargar webview
+            tasks.withType<JavaExec> {
+                jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+                jvmArgs(
+                    "--add-opens",
+                    "java.desktop/java.awt.peer=ALL-UNNAMED"
+                )
+
+                if (System.getProperty("os.name").contains("Mac")) {
+                    jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+                    jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
+                    jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
+                }
+            }
+        }
+
+
+    }
+}

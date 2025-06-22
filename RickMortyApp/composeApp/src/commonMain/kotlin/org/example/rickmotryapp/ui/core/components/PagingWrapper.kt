@@ -25,10 +25,11 @@ enum class PagingType {
 fun <T : Any> PagingWrapper(
     pagingType: PagingType,
     pagingItems: LazyPagingItems<T>,
+    itemView: @Composable (T) -> Unit,
     initialView: @Composable () -> Unit = {},
     emptyView: @Composable () -> Unit = {},
     extraItemsView: @Composable () -> Unit = {},
-    itemView: @Composable (T) -> Unit
+    header: @Composable () -> Unit = {},
 ) {
     when {
         pagingItems.loadState.refresh is LoadState.Loading && pagingItems.itemCount == 0 -> {
@@ -42,13 +43,7 @@ fun <T : Any> PagingWrapper(
         else -> {
             when (pagingType){
                 PagingType.ROW -> {
-                    LazyRow {
-                        items(pagingItems.itemCount) { pos ->
-                            pagingItems[pos]?.let { item ->
-                                itemView(item)
-                            }
-                        }
-                    }
+                    LazyRowTarget( pagingItems, itemView)
                 }
                 PagingType.COLUMN -> {
                     LazyColumn {
@@ -61,14 +56,7 @@ fun <T : Any> PagingWrapper(
                     }
                 }
                 PagingType.VERTICAL_GRID -> {
-                    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                        items(pagingItems.itemCount) { pos ->
-                            pagingItems[pos]?.let { item ->
-                                itemView(item)
-
-                            }
-                        }
-                    }
+                  LazyVerticalGridTarget(pagingItems, itemView, header)
                 }
             }
 
