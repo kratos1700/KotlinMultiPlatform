@@ -12,7 +12,7 @@ androidx-lifecycle = "2.9.0"
 androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.1"
 junit = "4.13.2"
-kotlin = "2.1.21"
+kotlin = "2.0.20"
 
 kmpObservableViewmodel = "1.0.0-BETA-5"
 kmpNativeCoroutines = "1.0.0-ALPHA-35"

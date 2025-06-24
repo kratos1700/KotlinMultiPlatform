@@ -33,22 +33,33 @@ kotlin {
 
         all {
 
-            languageSettings.optIn( "kotlinx.cinterop.ExperimentalForeignApi")
-            languageSettings.optIn( "kotlinx.experimental.ExperimentalObjCName")
-
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
         }
 
         commonMain.dependencies {
             // put your Multiplatform dependencies here
+            //DI
             implementation(libs.koin.core)
+
+            //ViewModel
             api(libs.kmp.observable.viewmodel)
+
+            //Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
+
+            //Logs
+            implementation(libs.logs.kermit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
 
         iosMain.dependencies {
-
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
