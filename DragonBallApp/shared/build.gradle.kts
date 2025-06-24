@@ -4,6 +4,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kmpNativeCoroutines)
+    alias(libs.plugins.kotlinxSerialization)
+
 }
 
 kotlin {
@@ -26,11 +30,25 @@ kotlin {
     }
     
     sourceSets {
+
+        all {
+
+            languageSettings.optIn( "kotlinx.cinterop.ExperimentalForeignApi")
+            languageSettings.optIn( "kotlinx.experimental.ExperimentalObjCName")
+
+        }
+
         commonMain.dependencies {
             // put your Multiplatform dependencies here
+            implementation(libs.koin.core)
+            api(libs.kmp.observable.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        iosMain.dependencies {
+
         }
     }
 }

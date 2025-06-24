@@ -22,6 +22,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.image.coil)
+            implementation(libs.android.compose.navigation)
+            implementation(libs.jetbrains.serialization)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
