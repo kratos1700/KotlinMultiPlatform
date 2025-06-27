@@ -15,9 +15,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
 
     val example by homeViewModel.example.collectAsState()
+    val character by homeViewModel.characters.collectAsState()
 
     Column {
-        Text(text = example)
+        Text(text = character.toString())
     }
 
 }
