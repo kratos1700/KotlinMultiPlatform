@@ -22,14 +22,39 @@ struct HomeScreen: View {
     var body: some View {
         if  !homeViewModel.characters.isEmpty {
             
-            LazyVStack {
-                ForEach(homeViewModel.characters, id:\.self) {character in
-                    Text(character.name)
+            NavigationStack {
+              VStack {
+                  
+                  Text("Vegeta Edition").font(.title).bold().foregroundColor(.white)
+                  
+                  ScrollView {
+                      
+
+                      LazyVStack {
+                          ForEach(homeViewModel.characters, id:\.self) {character in
+                              NavigationLink(destination: {}){
+                                  
+                                  CharacterItem(item: character)
+                                  
+                                  
+                              }
+                              
+                             
+                              
+                          }
+                      }
+                  
+                  
                     
                 }
+
+                }.background(Color(.backgroundPrimary))
+                
             }
+            
+            
         }else {
-            Text("Loading...")
+            ProgressView()
         }
     }
 }

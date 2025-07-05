@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A877E8E42E11A52C00F3BF8F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A877E8E32E11A52C00F3BF8F /* Kingfisher */; };
 		A885116D2E0AD389009539A3 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = A885116C2E0AD389009539A3 /* KMPNativeCoroutinesAsync */; };
 		A885116F2E0AD389009539A3 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = A885116E2E0AD389009539A3 /* KMPNativeCoroutinesCore */; };
 		A88511722E0AD44C009539A3 /* KMPObservableViewModelCore in Frameworks */ = {isa = PBXBuildFile; productRef = A88511712E0AD44C009539A3 /* KMPObservableViewModelCore */; };
@@ -52,6 +53,7 @@
 				A88511742E0AD44C009539A3 /* KMPObservableViewModelSwiftUI in Frameworks */,
 				A885116D2E0AD389009539A3 /* KMPNativeCoroutinesAsync in Frameworks */,
 				A88511722E0AD44C009539A3 /* KMPObservableViewModelCore in Frameworks */,
+				A877E8E42E11A52C00F3BF8F /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +102,7 @@
 				A885116E2E0AD389009539A3 /* KMPNativeCoroutinesCore */,
 				A88511712E0AD44C009539A3 /* KMPObservableViewModelCore */,
 				A88511732E0AD44C009539A3 /* KMPObservableViewModelSwiftUI */,
+				A877E8E32E11A52C00F3BF8F /* Kingfisher */,
 			);
 			productName = iosApp;
 			productReference = B9DA97B12DC1472C00A4DA20 /* DragonBallApp.app */;
@@ -132,6 +135,7 @@
 			packageReferences = (
 				A885116B2E0AD389009539A3 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
 				A88511702E0AD44C009539A3 /* XCRemoteSwiftPackageReference "KMP-ObservableViewModel" */,
+				A877E8E22E11A52C00F3BF8F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B9DA97B22DC1472C00A4DA20 /* Products */;
@@ -238,7 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -295,7 +299,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -395,6 +399,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A877E8E22E11A52C00F3BF8F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.3;
+			};
+		};
 		A885116B2E0AD389009539A3 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines.git";
@@ -414,6 +426,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A877E8E32E11A52C00F3BF8F /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A877E8E22E11A52C00F3BF8F /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		A885116C2E0AD389009539A3 /* KMPNativeCoroutinesAsync */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A885116B2E0AD389009539A3 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;

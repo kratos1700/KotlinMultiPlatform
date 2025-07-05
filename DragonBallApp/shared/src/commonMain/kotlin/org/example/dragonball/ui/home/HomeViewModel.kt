@@ -15,8 +15,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     private val _example = MutableStateFlow<String>(viewModelScope, "Hello from HomeViewModel")
 
-    @NativeCoroutinesState
-    val example: StateFlow<String> = _example
+
 
 
     private val _characters = MutableStateFlow<List<CharacterModel>>(viewModelScope, emptyList())
