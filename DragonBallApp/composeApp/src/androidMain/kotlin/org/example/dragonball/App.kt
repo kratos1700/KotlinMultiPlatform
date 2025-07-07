@@ -17,6 +17,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import dragonballapp.composeapp.generated.resources.Res
 import dragonballapp.composeapp.generated.resources.compose_multiplatform
+import org.example.dragonball.core.navigation.NavigationWrapper
 import org.example.dragonball.ui.home.HomeScreen
 
 @Composable
@@ -29,7 +30,7 @@ fun App() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            HomeScreen()
+          NavigationWrapper()
         }
     }
 }

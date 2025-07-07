@@ -40,7 +40,7 @@ import org.example.dragonball.resources.Orange
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navigateToDetail: (Int) -> Unit ) {
 
     val homeViewModel: HomeViewModel = koinViewModel()
 
@@ -59,7 +59,7 @@ fun HomeScreen() {
 
             items(characters) { character ->
                 CharacterItem(character){
-
+                        navigateToDetail(it.id)
                 }
             }
 

@@ -32,7 +32,9 @@ struct HomeScreen: View {
 
                       LazyVStack {
                           ForEach(homeViewModel.characters, id:\.self) {character in
-                              NavigationLink(destination: {}){
+                              NavigationLink(destination: {
+                                  DetailScreen(id: character.id)
+                              }){
                                   
                                   CharacterItem(item: character)
                                   
